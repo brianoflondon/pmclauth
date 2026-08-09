@@ -214,21 +214,27 @@ PAINTINGS: list[dict] = [
         ],
         "museum_url": "https://commons.wikimedia.org/wiki/Category:Orientalist_paintings_by_Otto_Pilny",
     },
-    # Harder-to-find: best-effort Commons search by filename guesses
+    # Harder-to-find: external links only (do not download third-party images)
     {
         "id": "crosio-beautiful-slave",
         "artist": "Luigi Crosio",
         "title": "The Beautiful Slave",
         "year": "1890",
-        "location": "Auction / secondary sources",
-        "notes": "Artist died 1915 (PD). High-res Commons file may be scarce.",
-        "commons_files": [
-            "Luigi Crosio - The Beautiful Slave.jpg",
-            "Crosio The Beautiful Slave.jpg",
-            "Luigi Crosio The Beautiful Slave.jpg",
+        "location": "Art Renewal Center (view online)",
+        "notes": (
+            "Artist died 1915 (PD). No stable high-res Wikimedia original found; "
+            "view the reproduction on Art Renewal Center (not mirrored here)."
+        ),
+        "commons_files": [],
+        "search_terms": [],
+        "museum_url": "https://www.artrenewal.org/artworks/the-beautiful-slave/luigi-crosio/38231",
+        "external_links": [
+            {
+                "label": "Art Renewal Center",
+                "url": "https://www.artrenewal.org/artworks/the-beautiful-slave/luigi-crosio/38231",
+            },
         ],
-        "search_terms": ["Crosio Beautiful Slave", "Luigi Crosio slave"],
-        "museum_url": None,
+        "skip_download": True,
         "hard_to_find": True,
     },
     {
@@ -236,15 +242,21 @@ PAINTINGS: list[dict] = [
         "artist": "Ettore Cercone",
         "title": "Inspecting the Slaves / Examining Slaves",
         "year": "1890",
-        "location": "Secondary sources",
-        "notes": "PD by date; dedicated high-res Commons file may be missing.",
-        "commons_files": [
-            "Ettore Cercone - Inspecting the Slaves.jpg",
-            "Cercone Examining Slaves.jpg",
-            "Ettore Cercone Examining the Slaves.jpg",
+        "location": "Flickr (view online)",
+        "notes": (
+            "PD by date; no dedicated high-res Commons file found. "
+            "View a public Flickr scan (not mirrored here)."
+        ),
+        "commons_files": [],
+        "search_terms": [],
+        "museum_url": "https://www.flickr.com/photos/amber-tree/15483321557",
+        "external_links": [
+            {
+                "label": "Flickr",
+                "url": "https://www.flickr.com/photos/amber-tree/15483321557",
+            },
         ],
-        "search_terms": ["Cercone Inspecting Slaves", "Cercone Examining Slaves"],
-        "museum_url": None,
+        "skip_download": True,
         "hard_to_find": True,
     },
     {
@@ -516,17 +528,49 @@ def resolve_painting(p: dict) -> dict | None:
     return candidates[0]
 
 
+ENTRY_META_KEYS = (
+    "id",
+    "artist",
+    "title",
+    "year",
+    "location",
+    "notes",
+    "museum_url",
+    "hard_to_find",
+    "external_links",
+    "skip_download",
+)
+
+
+def _base_entry(p: dict) -> dict:
+    return {k: p.get(k) for k in ENTRY_META_KEYS}
+
+
 def process_all(force: bool = False) -> list[dict]:
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     manifest: list[dict] = []
     ok = 0
     fail = 0
+    external_only = 0
 
     print(f"Downloading into {IMAGES_DIR}\n")
 
     for i, p in enumerate(PAINTINGS, 1):
         label = f"[{i}/{len(PAINTINGS)}] {p['artist']} — {p['title']}"
         print(label)
+
+        # Manual exception: link out only, never download third-party host images
+        if p.get("skip_download"):
+            links = p.get("external_links") or []
+            print(f"  · external only ({len(links)} link(s), not downloaded)")
+            entry = {
+                **_base_entry(p),
+                "local_file": None,
+                "status": "external",
+            }
+            manifest.append(entry)
+            external_only += 1
+            continue
 
         # Skip re-download if a local file already exists for this id
         existing = list(IMAGES_DIR.glob(f"{p['id']}.*"))
@@ -535,10 +579,7 @@ def process_all(force: bool = False) -> list[dict]:
             local = existing[0]
             print(f"  · already present: {local.name}")
             entry = {
-                **{k: p.get(k) for k in (
-                    "id", "artist", "title", "year", "location", "notes",
-                    "museum_url", "hard_to_find",
-                )},
+                **_base_entry(p),
                 "local_file": f"images/{local.name}",
                 "status": "cached",
             }
@@ -562,10 +603,7 @@ def process_all(force: bool = False) -> list[dict]:
         if not resolved:
             print("  ✗ no public Commons file found")
             entry = {
-                **{k: p.get(k) for k in (
-                    "id", "artist", "title", "year", "location", "notes",
-                    "museum_url", "hard_to_find",
-                )},
+                **_base_entry(p),
                 "local_file": None,
                 "status": "missing",
             }
@@ -583,10 +621,7 @@ def process_all(force: bool = False) -> list[dict]:
             size_kb = dest.stat().st_size / 1024
             print(f"  ✓ saved {dest.name} ({size_kb:.0f} KB)")
             entry = {
-                **{k: p.get(k) for k in (
-                    "id", "artist", "title", "year", "location", "notes",
-                    "museum_url", "hard_to_find",
-                )},
+                **_base_entry(p),
                 "local_file": f"images/{dest_name}",
                 "status": "downloaded",
                 **resolved,
@@ -596,10 +631,7 @@ def process_all(force: bool = False) -> list[dict]:
         except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
             print(f"  ✗ download failed: {e}")
             entry = {
-                **{k: p.get(k) for k in (
-                    "id", "artist", "title", "year", "location", "notes",
-                    "museum_url", "hard_to_find",
-                )},
+                **_base_entry(p),
                 "local_file": None,
                 "status": "error",
                 "error": str(e),
@@ -614,7 +646,10 @@ def process_all(force: bool = False) -> list[dict]:
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    print(f"\nDone. {ok} available, {fail} missing/failed.")
+    print(
+        f"\nDone. {ok} downloaded/cached, {external_only} external-only, "
+        f"{fail} missing/failed."
+    )
     print(f"Manifest written to {MANIFEST_PATH}")
     return manifest
 

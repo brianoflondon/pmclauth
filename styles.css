@@ -277,11 +277,24 @@ a:hover {
   transform: scale(1.03);
 }
 
-.card-media.missing {
+.card-media.missing,
+.card-media.external {
   display: flex;
   align-items: center;
   justify-content: center;
   background:
+    repeating-linear-gradient(
+      -45deg,
+      #161410,
+      #161410 10px,
+      #1c1914 10px,
+      #1c1914 20px
+    );
+}
+
+.card-media.external {
+  background:
+    radial-gradient(ellipse at center, rgba(201, 162, 39, 0.12), transparent 65%),
     repeating-linear-gradient(
       -45deg,
       #161410,
@@ -299,6 +312,41 @@ a:hover {
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.external-media-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  padding: 1rem;
+  color: inherit;
+}
+
+.external-badge {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(201, 162, 39, 0.45);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.external-host {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.external-media-link:hover .external-badge {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.external-media-link:hover .external-host {
+  color: var(--ink);
 }
 
 .card-body {

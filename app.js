@@ -24,9 +24,21 @@
     return Boolean(p.local_file) && p.status !== "missing" && p.status !== "error";
   }
 
+  function isExternalOnly(p) {
+    return p.status === "external" || (Boolean(p.skip_download) && !isAvailable(p));
+  }
+
+  function externalLinks(p) {
+    if (Array.isArray(p.external_links) && p.external_links.length) {
+      return p.external_links.filter((l) => l && l.url);
+    }
+    return [];
+  }
+
   function matches(p) {
     if (filter === "available" && !isAvailable(p)) return false;
-    if (filter === "missing" && isAvailable(p)) return false;
+    // "Not found" = true missing only; external-only cards stay under All
+    if (filter === "missing" && (isAvailable(p) || isExternalOnly(p))) return false;
     if (!query) return true;
     const hay = [p.artist, p.title, p.year, p.location, p.notes]
       .filter(Boolean)
@@ -50,19 +62,38 @@
 
   function cardHtml(p) {
     const available = isAvailable(p);
-    const media = available
-      ? `<div class="card-media">
+    const external = isExternalOnly(p);
+    const extLinks = externalLinks(p);
+    let media;
+    if (available) {
+      media = `<div class="card-media">
            <button type="button" data-open="${escapeHtml(p.id)}" aria-label="View ${escapeHtml(p.title)} larger">
              <img src="${escapeHtml(p.local_file)}" alt="${escapeHtml(p.title)} by ${escapeHtml(p.artist)}" loading="lazy" />
            </button>
-         </div>`
-      : `<div class="card-media missing"><span class="missing-badge">Image not found</span></div>`;
+         </div>`;
+    } else if (external && extLinks.length) {
+      const primary = extLinks[0];
+      media = `<div class="card-media external">
+           <a class="external-media-link" href="${escapeHtml(primary.url)}" target="_blank" rel="noopener">
+             <span class="external-badge">View online</span>
+             <span class="external-host">${escapeHtml(primary.label || "External source")}</span>
+           </a>
+         </div>`;
+    } else {
+      media = `<div class="card-media missing"><span class="missing-badge">Image not found</span></div>`;
+    }
 
     const links = [];
     if (p.page_url) {
       links.push(`<a href="${escapeHtml(p.page_url)}" target="_blank" rel="noopener">Wikimedia</a>`);
     }
-    if (p.museum_url) {
+    for (const l of extLinks) {
+      links.push(
+        `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener">${escapeHtml(l.label || "View online")}</a>`
+      );
+    }
+    // Avoid duplicating museum_url if it already appears in external_links
+    if (p.museum_url && !extLinks.some((l) => l.url === p.museum_url)) {
       links.push(`<a href="${escapeHtml(p.museum_url)}" target="_blank" rel="noopener">Source</a>`);
     }
     if (available) {
@@ -70,7 +101,7 @@
     }
 
     return `
-      <article class="card" data-id="${escapeHtml(p.id)}">
+      <article class="card${external ? " card-external" : ""}" data-id="${escapeHtml(p.id)}">
         ${media}
         <div class="card-body">
           <p class="card-year">${escapeHtml(p.year || "—")}</p>
@@ -95,7 +126,12 @@
   function updateStats() {
     const total = paintings.length;
     const available = paintings.filter(isAvailable).length;
-    statEl.textContent = `${available} of ${total} images available`;
+    const external = paintings.filter(isExternalOnly).length;
+    if (external) {
+      statEl.textContent = `${available} of ${total} images local · ${external} view online`;
+    } else {
+      statEl.textContent = `${available} of ${total} images available`;
+    }
   }
 
   function isLightboxOpen() {
