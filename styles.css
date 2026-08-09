@@ -1,0 +1,458 @@
+/* Orientalist PD Gallery — static GitHub Pages site */
+
+:root {
+  --bg: #0f0e0c;
+  --bg-elevated: #1a1814;
+  --bg-card: #221f1a;
+  --ink: #f3ebe0;
+  --ink-muted: #b5a898;
+  --ink-faint: #7a6f62;
+  --accent: #c9a227;
+  --accent-soft: rgba(201, 162, 39, 0.15);
+  --border: rgba(243, 235, 224, 0.08);
+  --danger: #c46b5a;
+  --radius: 12px;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  --max: 1200px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 162, 39, 0.12), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 100% 20%, rgba(120, 80, 40, 0.08), transparent),
+    var(--bg);
+  line-height: 1.55;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: #e0c04a;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Header */
+
+.site-header {
+  padding: 3.5rem 1.5rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.site-header h1 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.lede {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--ink-muted);
+  font-size: 1.05rem;
+  font-weight: 300;
+}
+
+.header-meta {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+.header-meta .dot {
+  opacity: 0.5;
+}
+
+#stat-count {
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+
+/* Toolbar */
+
+.toolbar {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-wrap {
+  flex: 1 1 220px;
+  max-width: 360px;
+}
+
+#search {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#search::placeholder {
+  color: var(--ink-faint);
+}
+
+#search:focus {
+  border-color: rgba(201, 162, 39, 0.45);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.chip:hover {
+  color: var(--ink);
+  border-color: rgba(243, 235, 224, 0.2);
+}
+
+.chip.active {
+  background: var(--accent-soft);
+  border-color: rgba(201, 162, 39, 0.4);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Gallery */
+
+.gallery {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.loading,
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--ink-faint);
+  padding: 3rem 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, border-color 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201, 162, 39, 0.25);
+}
+
+.card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #0a0908;
+  overflow: hidden;
+}
+
+.card-media button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-media img {
+  transform: scale(1.03);
+}
+
+.card-media.missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #161410,
+      #161410 10px,
+      #1c1914 10px,
+      #1c1914 20px
+    );
+}
+
+.missing-badge {
+  padding: 0.5rem 0.9rem;
+  border: 1px dashed rgba(196, 107, 90, 0.5);
+  border-radius: 8px;
+  color: var(--danger);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card-body {
+  padding: 1.1rem 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.card-year {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.card-artist {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+}
+
+.card-location {
+  margin: 0.25rem 0 0;
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+}
+
+.card-notes {
+  margin: 0.5rem 0 0;
+  color: var(--ink-faint);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.card-links {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.82rem;
+}
+
+.card-links a {
+  color: var(--ink-muted);
+}
+
+.card-links a:hover {
+  color: var(--accent);
+}
+
+/* Footer */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 1.5rem 3rem;
+  color: var(--ink-faint);
+  font-size: 0.88rem;
+}
+
+.footer-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.footer-inner p {
+  margin: 0 0 0.75rem;
+  max-width: 48rem;
+}
+
+.footer-note code {
+  font-size: 0.85em;
+  background: var(--bg-elevated);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  color: var(--ink-muted);
+}
+
+/* Lightbox */
+
+.lightbox {
+  border: none;
+  padding: 0;
+  max-width: min(96vw, 1100px);
+  max-height: 94vh;
+  background: transparent;
+  color: var(--ink);
+}
+
+.lightbox::backdrop {
+  background: rgba(5, 4, 3, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+.lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-close {
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lightbox-figure {
+  margin: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-height: calc(94vh - 3rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox-figure img {
+  max-height: min(75vh, 900px);
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+  background: #000;
+}
+
+.lightbox-figure figcaption {
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+}
+
+.lightbox-figure figcaption strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+@media (max-width: 560px) {
+  .site-header {
+    padding-top: 2.5rem;
+  }
+
+  .gallery {
+    grid-template-columns: 1fr;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

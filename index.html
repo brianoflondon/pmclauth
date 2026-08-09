@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Public-domain 19th- and early-20th-century Orientalist paintings from open repositories." />
+  <title>Orientalist Paintings — Public Domain Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="eyebrow">Public domain · Open repositories</p>
+      <h1>Orientalist Paintings</h1>
+      <p class="lede">
+        A gallery of 19th- and early-20th-century Orientalist works whose artists died long enough ago
+        that copyright has typically expired (life +&nbsp;70 years in many jurisdictions). Images are drawn
+        primarily from Wikimedia Commons and museum open collections.
+      </p>
+      <div class="header-meta">
+        <span id="stat-count">—</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>Always verify licence on the source page before commercial reuse</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Filters">
+      <label class="search-wrap">
+        <span class="visually-hidden">Search</span>
+        <input type="search" id="search" placeholder="Search artist or title…" autocomplete="off" />
+      </label>
+      <div class="filter-chips" role="group" aria-label="Show">
+        <button type="button" class="chip active" data-filter="all">All</button>
+        <button type="button" class="chip" data-filter="available">Available</button>
+        <button type="button" class="chip" data-filter="missing">Not found</button>
+      </div>
+    </section>
+
+    <section id="gallery" class="gallery" aria-live="polite">
+      <p class="loading">Loading gallery…</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>
+        Images are public domain or openly licensed where noted. Metadata and links were compiled for
+        educational reuse. Source files live on
+        <a href="https://commons.wikimedia.org/" rel="noopener">Wikimedia Commons</a>,
+        museum sites, Art UK, Library of Congress, and similar repositories.
+      </p>
+      <p class="footer-note">
+        Regenerated with <code>python3 download_images.py</code>. Hosted as a static site (GitHub Pages ready).
+      </p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <dialog id="lightbox" class="lightbox" aria-label="Image viewer">
+    <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-img" alt="" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
