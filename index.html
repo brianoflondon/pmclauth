@@ -1,25 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Public-domain 19th- and early-20th-century Orientalist paintings from open repositories." />
+  <meta name="description"
+    content="Public-domain 19th- and early-20th-century Orientalist paintings from open repositories." />
   <title>Orientalist Paintings — Public Domain Gallery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="site-header">
     <div class="header-inner">
       <p class="eyebrow">Public domain · Open repositories</p>
-      <h1>Orientalist Paintings</h1>
-      <p class="lede">
-        A gallery of 19th- and early-20th-century Orientalist works whose artists died long enough ago
-        that copyright has typically expired (life +&nbsp;70 years in many jurisdictions). Images are drawn
-        primarily from Wikimedia Commons and museum open collections.
-      </p>
+      <h1>Slave Trade Paintings</h1>
+      <div class="header-copy">
+        <p class="lede">
+          The history of art shows us that across Europe in the 19th century, there were many painters who were
+          depicting the trade in white slaves, particularly with white women as the sex slaves of Muslims. These
+          paintings are now often characterised as being of the ‘Orientalist’ genre (an implication these days that
+          they were racist fantasies, falsely imposed on the Muslim world). Examples of such paintings dating from
+          1838 to 1925 can be found, and the nationalities of the artists included British, French, Swiss, Austrian,
+          Polish, Greek, Russian, Italian, and Czech. So for 100 years there were artists across the continent of
+          Europe who were memorialising the Islamic slave trade, particularly the trade in White European women for
+          sexual slavery.
+        </p>
+        <p class="lede">
+          “Most of the artists listed above were still alive in the 20th century. Eugene Anson-Hoffman was a
+          particularly prolific artist in this genre. He did not die until 1955, when slavery was still legal in the
+          Gulf states, and when Muslims were beginning to migrate to the UK. It is no surprise to see that artists
+          from Poland, Russia, Greece and Italy are represented in this genre, since their regions in particular were
+          plundered by Muslims for the capture of slaves.”
+        </p>
+        <p class="sub-lede">
+          A gallery of 19th- and early-20th-century Orientalist works whose artists died long enough ago that
+          copyright has typically expired (life +&nbsp;70 years in many jurisdictions). Images are drawn primarily
+          from Wikimedia Commons and museum open collections.
+        </p>
+      </div>
       <div class="header-meta">
         <span id="stat-count">—</span>
         <span class="dot" aria-hidden="true">·</span>
@@ -62,13 +86,25 @@
 
   <!-- Lightbox -->
   <dialog id="lightbox" class="lightbox" aria-label="Image viewer">
-    <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
-    <figure class="lightbox-figure">
-      <img id="lightbox-img" alt="" />
-      <figcaption id="lightbox-caption"></figcaption>
-    </figure>
+    <div class="lightbox-toolbar">
+      <span id="lightbox-counter" class="lightbox-counter" aria-live="polite"></span>
+      <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="lightbox-stage">
+      <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image" title="Previous (←)">
+        &#8249;
+      </button>
+      <figure class="lightbox-figure">
+        <img id="lightbox-img" alt="" />
+        <figcaption id="lightbox-caption"></figcaption>
+      </figure>
+      <button type="button" class="lightbox-nav lightbox-next" aria-label="Next image" title="Next (→)">
+        &#8250;
+      </button>
+    </div>
   </dialog>
 
   <script src="app.js"></script>
 </body>
+
 </html>

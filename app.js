@@ -1,5 +1,5 @@
 /**
- * Gallery client: loads manifest.json and renders cards + lightbox.
+ * Gallery client: loads manifest.json and renders cards + lightbox with prev/next.
  */
 
 (function () {
@@ -9,14 +9,19 @@
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   const lightboxCaption = document.getElementById("lightbox-caption");
+  const lightboxCounter = document.getElementById("lightbox-counter");
   const closeBtn = lightbox.querySelector(".lightbox-close");
+  const prevBtn = lightbox.querySelector(".lightbox-prev");
+  const nextBtn = lightbox.querySelector(".lightbox-next");
 
   let paintings = [];
   let filter = "all";
   let query = "";
+  /** Index into availableSlideshow() while the lightbox is open; -1 when closed. */
+  let lightboxIndex = -1;
 
   function isAvailable(p) {
-    return p.local_file && p.status !== "missing" && p.status !== "error";
+    return Boolean(p.local_file) && p.status !== "missing" && p.status !== "error";
   }
 
   function matches(p) {
@@ -28,6 +33,11 @@
       .join(" ")
       .toLowerCase();
     return hay.includes(query);
+  }
+
+  /** Currently filtered paintings that have images (gallery order). */
+  function availableSlideshow() {
+    return paintings.filter((p) => matches(p) && isAvailable(p));
   }
 
   function escapeHtml(s) {
@@ -88,26 +98,59 @@
     statEl.textContent = `${available} of ${total} images available`;
   }
 
-  function openLightbox(id) {
-    const p = paintings.find((x) => x.id === id);
-    if (!p || !isAvailable(p)) return;
+  function isLightboxOpen() {
+    return Boolean(lightbox.open || lightbox.hasAttribute("open"));
+  }
+
+  function showAtIndex(index) {
+    const slides = availableSlideshow();
+    if (!slides.length) return;
+
+    // Wrap around
+    const len = slides.length;
+    lightboxIndex = ((index % len) + len) % len;
+    const p = slides[lightboxIndex];
+
     lightboxImg.src = p.local_file;
     lightboxImg.alt = `${p.title} by ${p.artist}`;
-    lightboxCaption.innerHTML = `<strong>${escapeHtml(p.title)}</strong>${escapeHtml(p.artist)}${p.year ? ` · ${escapeHtml(p.year)}` : ""}`;
+    lightboxCaption.innerHTML = `<strong>${escapeHtml(p.title)}</strong>${escapeHtml(p.artist)}${
+      p.year ? ` · ${escapeHtml(p.year)}` : ""
+    }`;
+    lightboxCounter.textContent = `${lightboxIndex + 1} / ${len}`;
+
+    const multi = len > 1;
+    prevBtn.disabled = !multi;
+    nextBtn.disabled = !multi;
+  }
+
+  function openLightbox(id) {
+    const slides = availableSlideshow();
+    const index = slides.findIndex((x) => x.id === id);
+    if (index < 0) return;
+
+    showAtIndex(index);
+
     if (typeof lightbox.showModal === "function") {
-      lightbox.showModal();
+      if (!lightbox.open) lightbox.showModal();
     } else {
       lightbox.setAttribute("open", "");
     }
   }
 
   function closeLightbox() {
+    lightboxIndex = -1;
     if (typeof lightbox.close === "function") {
-      lightbox.close();
+      if (lightbox.open) lightbox.close();
     } else {
       lightbox.removeAttribute("open");
     }
     lightboxImg.removeAttribute("src");
+    lightboxCounter.textContent = "";
+  }
+
+  function stepLightbox(delta) {
+    if (!isLightboxOpen() || lightboxIndex < 0) return;
+    showAtIndex(lightboxIndex + delta);
   }
 
   galleryEl.addEventListener("click", (e) => {
@@ -116,16 +159,46 @@
   });
 
   closeBtn.addEventListener("click", closeLightbox);
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    stepLightbox(-1);
+  });
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    stepLightbox(1);
+  });
+
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
+
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && lightbox.open) closeLightbox();
+    if (!isLightboxOpen()) return;
+    if (e.key === "Escape") {
+      closeLightbox();
+      return;
+    }
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      stepLightbox(-1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      stepLightbox(1);
+    }
   });
 
   searchEl.addEventListener("input", () => {
     query = searchEl.value.trim().toLowerCase();
     render();
+    // Keep lightbox in sync with filtered set if open
+    if (isLightboxOpen() && lightboxIndex >= 0) {
+      const slides = availableSlideshow();
+      if (!slides.length) {
+        closeLightbox();
+      } else {
+        showAtIndex(Math.min(lightboxIndex, slides.length - 1));
+      }
+    }
   });
 
   document.querySelectorAll(".chip").forEach((chip) => {
@@ -134,6 +207,14 @@
       chip.classList.add("active");
       filter = chip.dataset.filter;
       render();
+      if (isLightboxOpen() && lightboxIndex >= 0) {
+        const slides = availableSlideshow();
+        if (!slides.length) {
+          closeLightbox();
+        } else {
+          showAtIndex(Math.min(lightboxIndex, slides.length - 1));
+        }
+      }
     });
   });
 

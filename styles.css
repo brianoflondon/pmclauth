@@ -97,12 +97,31 @@ a:hover {
   letter-spacing: 0.01em;
 }
 
+.header-copy {
+  max-width: 42rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
 .lede {
   margin: 0;
-  max-width: 42rem;
+  color: var(--ink);
+  font-size: 1.08rem;
+  font-weight: 400;
+  line-height: 1.7;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.sub-lede {
+  margin: 0;
   color: var(--ink-muted);
   font-size: 1.05rem;
   font-weight: 300;
+  line-height: 1.65;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .header-meta {
@@ -374,7 +393,8 @@ a:hover {
 .lightbox {
   border: none;
   padding: 0;
-  max-width: min(96vw, 1100px);
+  max-width: min(96vw, 1200px);
+  width: 100%;
   max-height: 94vh;
   background: transparent;
   color: var(--ink);
@@ -388,12 +408,25 @@ a:hover {
 .lightbox[open] {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.lightbox-toolbar {
+  display: flex;
   align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.lightbox-counter {
+  margin-right: auto;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
 }
 
 .lightbox-close {
-  align-self: flex-end;
-  margin-bottom: 0.5rem;
   width: 2.5rem;
   height: 2.5rem;
   border: 1px solid var(--border);
@@ -410,15 +443,52 @@ a:hover {
   color: var(--accent);
 }
 
+.lightbox-stage {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.lightbox-nav {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.lightbox-nav:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.lightbox-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
 .lightbox-figure {
   margin: 0;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  max-height: calc(94vh - 3rem);
+  max-height: calc(94vh - 3.5rem);
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .lightbox-figure img {
@@ -443,6 +513,41 @@ a:hover {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.2rem;
+}
+
+@media (max-width: 640px) {
+  .lightbox-stage {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .lightbox-nav {
+    position: static;
+    justify-self: center;
+  }
+
+  .lightbox-prev {
+    order: 2;
+    grid-column: 1;
+  }
+
+  .lightbox-figure {
+    order: 1;
+  }
+
+  .lightbox-next {
+    order: 3;
+  }
+
+  .lightbox-stage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lightbox-figure {
+    flex: 1 1 100%;
+  }
 }
 
 @media (max-width: 560px) {
