@@ -63,6 +63,8 @@ If you only want the script and site code in git until you’re ready to publish
 
 ## Paintings catalogue
 
-Confirmed Commons-oriented sources include works by Ingres, Allan, Roberts, Müller, Gérôme, Čermák, Gyzis, Vereshchagin, Waterhouse, Gottlieb, Rosati, Normand, and Pilny. A few titles (Crosio, Cercone, Ansen-Hofmann) are harder to find in high-res open form; the script tries Commons filenames and search, then marks them missing if nothing turns up.
+The download list follows **Appendix 4 — Slave Trade Paintings** (19 works). Combined titles in earlier versions (Rosati, Pilny, Ansen-Hofmann) are now one entry each.
 
-Hard-to-find items appear in the gallery as “Image not found” with notes so the catalogue stays complete.
+Confirmed Commons files include Ingres, Allan, Roberts, Müller, Gérôme, Čermák, Gyzis, Vereshchagin, Waterhouse, Gottlieb, both Rosati canvases, Normand, Ansen-Hofmann’s desert-market scene, and both Pilny canvases. A few titles (Crosio, Cercone, *The White Slave Girl*) are harder to find in high-res open form; the script tries Commons filenames and search, then marks them missing or links out.
+
+Hard-to-find items appear in the gallery as “Image not found” or “View online” with notes so the catalogue stays complete.

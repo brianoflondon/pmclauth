@@ -43,9 +43,8 @@ IMAGE_MIMES = {
 }
 
 # ---------------------------------------------------------------------------
-# Painting catalogue
-# Each entry: id, artist, title, year, notes, commons_files (preferred order),
-# optional extra_urls for non-Commons fallbacks.
+# Painting catalogue — one entry per work in Appendix 4 (Slave Trade Paintings).
+# Each entry: id, artist, title, year, notes, commons_files (preferred order).
 # ---------------------------------------------------------------------------
 
 PAINTINGS: list[dict] = [
@@ -53,9 +52,9 @@ PAINTINGS: list[dict] = [
         "id": "ingres-odalisque-slave-1842",
         "artist": "Jean-Auguste-Dominique Ingres (with Jean-Paul Flandrin)",
         "title": "Odalisque with Slave",
-        "year": "1839 / 1842",
-        "location": "Walters Art Museum / Harvard Art Museums (Fogg)",
-        "notes": "Related 1842 version and Fogg study; public domain.",
+        "year": "1839",
+        "location": "Harvard Art Museums (Fogg); related 1842 version at Walters Art Museum",
+        "notes": "Appendix lists the 1839 Fogg version; the 1842 Walters canvas is a related autograph replica.",
         "commons_files": [
             "Odalisque with slave, by Jean-Auguste-Dominique Ingres and Jean-Paul Flandrin.jpg",
             "Ingres Odalisque esclave Fogg Art.jpeg",
@@ -78,9 +77,9 @@ PAINTINGS: list[dict] = [
         "id": "roberts-slave-market-cairo",
         "artist": "David Roberts (lithograph by Louis Haghe)",
         "title": "A Slave Market in Cairo",
-        "year": "c. 1839–1840s",
-        "location": "Library of Congress / Wikimedia Commons",
-        "notes": "PD lithograph after Roberts.",
+        "year": "1839",
+        "location": "Exhibited at the Royal Academy; this scan is a PD lithograph",
+        "notes": "Appendix lists the 1839 RA exhibit; Commons holds a public-domain lithograph after Roberts.",
         "commons_files": [
             "A slave market in Cairo-David Roberts.jpg",
         ],
@@ -89,10 +88,10 @@ PAINTINGS: list[dict] = [
     {
         "id": "muller-slave-market-cairo",
         "artist": "William James Müller",
-        "title": "Slave Market, Cairo",
+        "title": "The Cairo Slave Market",
         "year": "1841",
-        "location": "Bury Art Museum / Guildhall (related versions)",
-        "notes": "Wikimedia / Art UK versions exist.",
+        "location": "City of London Corporation / Bury Art Museum (related versions)",
+        "notes": "Appendix locates a version with the City of London; this Commons file is the Bury Art Museum canvas.",
         "commons_files": [
             "William James Müller (1812-1845) - Slave Market, Cairo - 0085-1901 - Bury Art Museum.jpg",
         ],
@@ -103,7 +102,7 @@ PAINTINGS: list[dict] = [
         "artist": "Jean-Léon Gérôme",
         "title": "Slave Market (Le Marché d'esclaves)",
         "year": "1866",
-        "location": "Clark Art Institute",
+        "location": "Clark Art Institute, Massachusetts",
         "notes": "Multiple public-domain digital copies on Commons.",
         "commons_files": [
             "Jean-Léon Gérôme - Le Marché d'esclaves, 1866.jpg",
@@ -116,110 +115,18 @@ PAINTINGS: list[dict] = [
         "artist": "Jaroslav Čermák",
         "title": "The Abduction of a Herzegovinian Woman",
         "year": "1861",
-        "location": "Dahesh Museum",
-        "notes": "Also known as Herz.Woman in some catalogues.",
+        "location": "Dahesh Museum of Art, New York",
+        "notes": "Appendix abbreviation: Abduction of Herz.Woman.",
         "commons_files": [
             "Jaroslav Čermák - (Czech, 1830-1878) - The Abduction of a Herzegovenian Woman, 1861 - Oil on canvas, 98 1-2 x 75 in.jpg",
         ],
         "museum_url": "https://daheshmuseum.org/portfolio/jaroslav-cermakthe-abduction-of-a-herzegovenian-woman/",
     },
     {
-        "id": "gyzis-slave-market",
-        "artist": "Nikolaos Gyzis",
-        "title": "The Slave Market",
-        "year": "c. 1873–1875",
-        "location": "National Gallery, Athens",
-        "notes": "Public domain noted in secondary sources; try Commons then skip if missing.",
-        "commons_files": [
-            "Nikolaos Gyzis - The Slave Market.jpg",
-            "Gyzis Slave Market.jpg",
-            "Νικόλαος Γύζης - Το σκλαβοπάζαρο.jpg",
-        ],
-        "museum_url": "https://www.nationalgallery.gr/en/artwork/the-slave-market/",
-        "search_terms": ["Gyzis Slave Market", "Gyzis σκλαβοπάζαρο"],
-    },
-    {
-        "id": "vereshchagin-sale-child-slave",
-        "artist": "Vasily Vereshchagin",
-        "title": "The Sale of the Child Slave",
-        "year": "1872",
-        "location": "Tretyakov Gallery",
-        "notes": "Also titled Selling a Child Slave.",
-        "commons_files": [
-            "Wassili Wassiljewitsch Wereschtschagin - The Sale of the Child Slave.jpg",
-        ],
-        "museum_url": "https://commons.wikimedia.org/wiki/File:Wassili_Wassiljewitsch_Wereschtschagin_-_The_Sale_of_the_Child_Slave.jpg",
-    },
-    {
-        "id": "waterhouse-the-slave",
-        "artist": "John William Waterhouse",
-        "title": "The Slave",
-        "year": "1872",
-        "location": "Private collection",
-        "notes": "Public domain reproduction on Commons.",
-        "commons_files": [
-            "John william waterhouse the slave.jpg",
-        ],
-        "museum_url": "https://commons.wikimedia.org/wiki/File:John_william_waterhouse_the_slave.jpg",
-    },
-    {
-        "id": "gottlieb-cairo-slave-market",
-        "artist": "Maurycy Gottlieb",
-        "title": "Cairo Slave Market",
-        "year": "1877",
-        "location": "—",
-        "notes": "Public domain on Wikimedia Commons.",
-        "commons_files": [
-            "Maurycy Gottlieb - Cairo Slave Market 1877.jpg",
-        ],
-        "museum_url": "https://commons.wikimedia.org/wiki/File:Maurycy_Gottlieb_-_Cairo_Slave_Market_1877.jpg",
-    },
-    {
-        "id": "rosati-inspecting-new-arrivals",
-        "artist": "Giulio Rosati",
-        "title": "Inspection of New Arrivals (Picking the Favourite)",
-        "year": "c. 1910 / before 1917",
-        "location": "—",
-        "notes": "Related Choosing/Picking the Favourite images also circulate as PD.",
-        "commons_files": [
-            "Inspecting New Arrivals by Giulio Rosati 2.jpg",
-            "Inspecting New Arrivals by Giulio Rosati.jpg",
-            "Giulio Rosati - Picking the Favourite.jpg",
-        ],
-        "museum_url": "https://commons.wikimedia.org/wiki/File:Inspecting_New_Arrivals_by_Giulio_Rosati_2.jpg",
-    },
-    {
-        "id": "normand-bitter-draught",
-        "artist": "Ernest Normand",
-        "title": "The Bitter Draught of Slavery",
-        "year": "1885",
-        "location": "Cartwright Hall / Bradford Museums",
-        "notes": "Wikimedia / Art UK.",
-        "commons_files": [
-            "Ernest Normand (1857-1923) - The Bitter Draught of Slavery - 1936-051 - Cartwright Hall Art Gallery.jpg",
-        ],
-        "museum_url": "https://artuk.org/discover/artworks/the-bitter-draught-of-slavery-23346",
-    },
-    {
-        "id": "pilny-at-the-slave-market",
-        "artist": "Otto Pilny",
-        "title": "At the Slave Market",
-        "year": "1916",
-        "location": "—",
-        "notes": "Artist died 1936; PD in many jurisdictions. See also related Pilny works.",
-        "commons_files": [
-            "Otto Pilny - At the slave market.jpeg",
-            "The Slave Market by Otto Pilny.jpg",
-            "Otto Pilny - The Slave Market.jpg",
-        ],
-        "museum_url": "https://commons.wikimedia.org/wiki/Category:Orientalist_paintings_by_Otto_Pilny",
-    },
-    # Harder-to-find: external links only (do not download third-party images)
-    {
         "id": "crosio-beautiful-slave",
         "artist": "Luigi Crosio",
         "title": "The Beautiful Slave",
-        "year": "1890",
+        "year": "1895",
         "location": "Art Renewal Center (view online)",
         "notes": (
             "Artist died 1915 (PD). No stable high-res Wikimedia original found; "
@@ -238,14 +145,53 @@ PAINTINGS: list[dict] = [
         "hard_to_find": True,
     },
     {
+        "id": "gyzis-slave-market",
+        "artist": "Nikolaos Gyzis",
+        "title": "The Slave Market",
+        "year": "1875",
+        "location": "National Gallery, Athens",
+        "notes": "Public domain; Commons search may surface Greek-title scans.",
+        "commons_files": [
+            "Nikolaos Gyzis - The Slave Market.jpg",
+            "Gyzis Slave Market.jpg",
+            "Νικόλαος Γύζης - Το σκλαβοπάζαρο.jpg",
+        ],
+        "museum_url": "https://www.nationalgallery.gr/en/artwork/the-slave-market/",
+        "search_terms": ["Gyzis Slave Market", "Gyzis σκλαβοπάζαρο"],
+    },
+    {
+        "id": "vereshchagin-sale-child-slave",
+        "artist": "Vasily Vereshchagin",
+        "title": "The Sale of the Child Slave",
+        "year": "1872",
+        "location": "Tretyakov Gallery; exhibited at Crystal Palace",
+        "notes": "Also titled Selling a Child Slave.",
+        "commons_files": [
+            "Wassili Wassiljewitsch Wereschtschagin - The Sale of the Child Slave.jpg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:Wassili_Wassiljewitsch_Wereschtschagin_-_The_Sale_of_the_Child_Slave.jpg",
+    },
+    {
+        "id": "waterhouse-the-slave",
+        "artist": "John William Waterhouse",
+        "title": "The Slave",
+        "year": "1872",
+        "location": "Exhibited at the Royal Academy; now private collection",
+        "notes": "Public domain reproduction on Commons.",
+        "commons_files": [
+            "John william waterhouse the slave.jpg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:John_william_waterhouse_the_slave.jpg",
+    },
+    {
         "id": "cercone-inspecting-slaves",
         "artist": "Ettore Cercone",
-        "title": "Inspecting the Slaves / Examining Slaves",
+        "title": "Inspecting the Slaves",
         "year": "1890",
         "location": "Flickr (view online)",
         "notes": (
-            "PD by date; no dedicated high-res Commons file found. "
-            "View a public Flickr scan (not mirrored here)."
+            "Also catalogued as Examining Slaves. PD by date; no dedicated high-res "
+            "Commons file found. View a public Flickr scan (not mirrored here)."
         ),
         "commons_files": [],
         "search_terms": [],
@@ -260,27 +206,124 @@ PAINTINGS: list[dict] = [
         "hard_to_find": True,
     },
     {
+        "id": "gottlieb-cairo-slave-market",
+        "artist": "Maurycy Gottlieb",
+        "title": "Cairo Slave Market",
+        "year": "1877",
+        "location": "—",
+        "notes": "Public domain on Wikimedia Commons.",
+        "commons_files": [
+            "Maurycy Gottlieb - Cairo Slave Market 1877.jpg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:Maurycy_Gottlieb_-_Cairo_Slave_Market_1877.jpg",
+    },
+    {
+        "id": "rosati-inspecting-new-arrivals",
+        "artist": "Giulio Rosati",
+        "title": "Inspection of New Arrivals",
+        "year": "1912",
+        "location": "—",
+        "notes": "Separate from Rosati’s Picking the Favourite (1910).",
+        "commons_files": [
+            "Inspecting New Arrivals by Giulio Rosati 2.jpg",
+            "Inspecting New Arrivals by Giulio Rosati.jpg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:Inspecting_New_Arrivals_by_Giulio_Rosati_2.jpg",
+    },
+    {
+        "id": "rosati-picking-the-favourite",
+        "artist": "Giulio Rosati",
+        "title": "Picking the Favourite",
+        "year": "1910",
+        "location": "Commons (detail of the canvas)",
+        "notes": (
+            "Also sold as Choosing / Selecting the Favourite. Commons only has a "
+            "high-res detail of this canvas (a similarly titled full file is a "
+            "variant of Inspection of New Arrivals)."
+        ),
+        "commons_files": [
+            "Picking the Favourite (detail) by Giulio Rosati.jpg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:Picking_the_Favourite_(detail)_by_Giulio_Rosati.jpg",
+    },
+    {
+        "id": "normand-bitter-draught",
+        "artist": "Ernest Normand",
+        "title": "The Bitter Draught of Slavery",
+        "year": "1885",
+        "location": "Cartwright Hall / Bradford Museums",
+        "notes": "Wikimedia / Art UK.",
+        "commons_files": [
+            "Ernest Normand (1857-1923) - The Bitter Draught of Slavery - 1936-051 - Cartwright Hall Art Gallery.jpg",
+        ],
+        "museum_url": "https://artuk.org/discover/artworks/the-bitter-draught-of-slavery-23346",
+    },
+    {
         "id": "ansen-hofmann-white-slaves",
         "artist": "Eduard Ansen-Hofmann (E. Anson-Hoffman)",
-        "title": "Auction / Bidding scene (Торги) — related Orientalist market work",
-        "year": "c. late 19th c.",
+        "title": "White Slaves in the Desert",
+        "year": "1890",
         "location": "Private collection (Commons scan)",
         "notes": (
-            "Exact ‘White Slaves in the Desert’ / ‘White Slave Girl’ titles are scarce "
-            "as clean museum files; this is a confirmed Ansen-Hofmann Orientalist market "
-            "scene on Wikimedia Commons (PD)."
+            "Appendix title; Commons catalogues this canvas as Торги (auction/bidding), "
+            "a related Ansen-Hofmann desert market scene (PD)."
         ),
         "commons_files": [
             "Eduard Ansen-Hofmann, 1820-1904. Торги. 90 х 124 см. Частная коллекция (33703806928).jpg",
             "Eduard Ansen-Hofmann - White Slaves in the Desert.jpg",
-            "Ansen-Hofmann The White Slave Girl.jpg",
         ],
         "search_terms": [
             'intitle:"Ansen-Hofmann"',
             'intitle:"Ansen Hofmann"',
         ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:Eduard_Ansen-Hofmann,_1820-1904._%D0%A2%D0%BE%D1%80%D0%B3%D0%B8._90_%D1%85_124_%D1%81%D0%BC._%D0%A7%D0%B0%D1%81%D1%82%D0%BD%D0%B0%D1%8F_%D0%BA%D0%BE%D0%BB%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D1%8F_(33703806928).jpg",
+        "hard_to_find": True,
+    },
+    {
+        "id": "ansen-hofmann-white-slave-girl",
+        "artist": "Eduard Ansen-Hofmann (E. Anson-Hoffman)",
+        "title": "The White Slave Girl",
+        "year": "1888",
+        "location": "Private collection",
+        "notes": (
+            "Appendix lists this as a separate 1888 canvas. No stable high-res Wikimedia "
+            "original found (auction records sometimes use ‘The New Slave Girl’)."
+        ),
+        "commons_files": [
+            "Ansen-Hofmann The White Slave Girl.jpg",
+            "Eduard Ansen-Hofmann - The White Slave Girl.jpg",
+            "Eduard Ansen-Hoffmann The new slave girl.jpg",
+        ],
+        # Exact titles only — a broad Ansen-Hofmann search would grab unrelated canvases.
+        "search_terms": [],
         "museum_url": None,
         "hard_to_find": True,
+    },
+    {
+        "id": "pilny-the-slave-market-1910",
+        "artist": "Otto Pilny",
+        "title": "The Slave Market",
+        "year": "1910",
+        "location": "Private collection",
+        "notes": "Distinct from Pilny’s 1916 At the Slave Market. Artist died 1936; PD in many jurisdictions.",
+        "commons_files": [
+            "The Slave Market by Otto Pilny.jpg",
+            "Otto Pilny - The Slave Market.jpg",
+            "Slave Market in Desert, Otto Pilny (1866-1936).jpg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:The_Slave_Market_by_Otto_Pilny.jpg",
+    },
+    {
+        "id": "pilny-at-the-slave-market",
+        "artist": "Otto Pilny",
+        "title": "At the Slave Market",
+        "year": "1916",
+        "location": "Private collection",
+        "notes": "Artist died 1936; PD in many jurisdictions.",
+        "commons_files": [
+            "Otto Pilny - At the slave market.jpeg",
+        ],
+        "museum_url": "https://commons.wikimedia.org/wiki/File:Otto_Pilny_-_At_the_slave_market.jpeg",
     },
 ]
 
