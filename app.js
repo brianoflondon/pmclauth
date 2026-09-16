@@ -254,7 +254,7 @@
     });
   });
 
-  fetch("manifest.json")
+  fetch("manifest.json?v=ce86a839d167")
     .then((r) => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
