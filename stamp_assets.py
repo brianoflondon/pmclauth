@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Fingerprint static assets and rewrite cache-busting references.
 
-Run after changing styles.css, app.js, manifest.json, or images:
+Run after changing styles.css, app.js, or manifest.json:
 
     python3 stamp_assets.py
+
+If you replace image bytes in place without changing manifest.json, also bump
+CACHE_VERSION via this script after a trivial manifest touch, or purge the
+browser service worker caches. This script does not hash image binaries.
 
 Updates:
   - index.html asset ?v= hashes
@@ -32,9 +36,16 @@ def short_hash(path: Path, length: int = 12) -> str:
     return digest[:length]
 
 
+def combined_stamp(hashes: dict[str, str]) -> str:
+    """Build CACHE_VERSION from all fingerprinted assets (not just manifest)."""
+    material = "|".join(f"{name}:{hashes[name]}" for name in sorted(hashes))
+    digest = hashlib.sha256(material.encode("utf-8")).hexdigest()[:12]
+    day = datetime.now(timezone.utc).strftime("%Y%m%d")
+    return f"{day}-{digest}"
+
+
 def main() -> None:
     hashes = {name: short_hash(path) for name, path in ASSETS.items()}
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%d") + "-" + hashes["manifest.json"]
 
     index_path = ROOT / "index.html"
     index = index_path.read_text(encoding="utf-8")
@@ -57,7 +68,7 @@ def main() -> None:
         f'fetch("manifest.json?v={hashes["manifest.json"]}")',
         app,
     )
-    # Re-hash app.js after rewrite, then fix index + sw again for app hash
+    # Re-hash app.js after rewrite, then fix index again for app hash
     app_path.write_text(app, encoding="utf-8")
     hashes["app.js"] = short_hash(app_path)
     index = index_path.read_text(encoding="utf-8")
@@ -67,6 +78,9 @@ def main() -> None:
         index,
     )
     index_path.write_text(index, encoding="utf-8")
+
+    # Stamp after final hashes so CSS/JS-only changes also bump SW caches
+    stamp = combined_stamp(hashes)
 
     sw_path = ROOT / "sw.js"
     sw = sw_path.read_text(encoding="utf-8")

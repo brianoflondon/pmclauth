@@ -2,11 +2,11 @@
  *
  * Strategy:
  * - App shell (HTML/CSS/JS/manifest/favicon): stale-while-revalidate
- * - Images under /images/: cache-first (content almost never changes)
+ * - Gallery images (…/images/…): cache-first (content almost never changes)
  * - Bump CACHE_VERSION (or run stamp_assets.py) after publishing content changes
  *   so clients drop old caches.
  */
-const CACHE_VERSION = "20260916-ce86a839d167";
+const CACHE_VERSION = "20260916-2eece7a53342";
 const SHELL_CACHE = `gallery-shell-${CACHE_VERSION}`;
 const IMAGE_CACHE = `gallery-images-${CACHE_VERSION}`;
 
@@ -47,11 +47,36 @@ function isSameOrigin(url) {
   return url.origin === self.location.origin;
 }
 
-function isImagePath(pathname) {
+/** True for gallery image paths at site root or under a GH Pages subpath. */
+function isGalleryImagePath(pathname) {
   return (
+    pathname === "/images" ||
     pathname.startsWith("/images/") ||
-    /\.(?:avif|css|gif|ico|jpe?g|js|json|png|svg|webp)$/i.test(pathname)
+    pathname.includes("/images/")
   );
+}
+
+function isStaticAssetPath(pathname) {
+  return /\.(?:avif|css|gif|ico|jpe?g|js|json|png|svg|webp)$/i.test(pathname);
+}
+
+function offlineFallback(request) {
+  const accepts = request.headers.get("accept") || "";
+  if (request.mode === "navigate" || accepts.includes("text/html")) {
+    return new Response(
+      "<!DOCTYPE html><title>Offline</title><p>Offline — reload when you are back online.</p>",
+      {
+        status: 503,
+        statusText: "Service Unavailable",
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      }
+    );
+  }
+  return new Response("Offline", {
+    status: 503,
+    statusText: "Service Unavailable",
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
 }
 
 async function staleWhileRevalidate(request, cacheName) {
@@ -64,9 +89,10 @@ async function staleWhileRevalidate(request, cacheName) {
       }
       return response;
     })
-    .catch(() => cached);
+    .catch(() => null);
 
-  return cached || networkPromise;
+  const response = cached || (await networkPromise);
+  return response || offlineFallback(request);
 }
 
 async function cacheFirst(request, cacheName) {
@@ -74,11 +100,15 @@ async function cacheFirst(request, cacheName) {
   const cached = await cache.match(request);
   if (cached) return cached;
 
-  const response = await fetch(request);
-  if (response && response.ok) {
-    cache.put(request, response.clone());
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) {
+      cache.put(request, response.clone());
+    }
+    return response || offlineFallback(request);
+  } catch {
+    return offlineFallback(request);
   }
-  return response;
 }
 
 self.addEventListener("fetch", (event) => {
@@ -94,17 +124,14 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Gallery images: long-lived cache-first
-  if (url.pathname.startsWith("/images/")) {
+  // Gallery images: long-lived cache-first (root or project-pages subpath)
+  if (isGalleryImagePath(url.pathname)) {
     event.respondWith(cacheFirst(request, IMAGE_CACHE));
     return;
   }
 
   // Versioned shell assets and favicon
-  if (isImagePath(url.pathname) || url.searchParams.has("v")) {
-    const cacheName = url.pathname.startsWith("/images/")
-      ? IMAGE_CACHE
-      : SHELL_CACHE;
-    event.respondWith(staleWhileRevalidate(request, cacheName));
+  if (isStaticAssetPath(url.pathname) || url.searchParams.has("v")) {
+    event.respondWith(staleWhileRevalidate(request, SHELL_CACHE));
   }
 });
