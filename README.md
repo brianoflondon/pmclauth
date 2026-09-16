@@ -45,6 +45,21 @@ Open http://localhost:8000
 
 **Note:** Large images can make the repo heavy. If needed, use [Git LFS](https://git-lfs.github.com/) for `images/*`, or host images on Commons/CDN and point `local_file` at absolute URLs.
 
+## Caching (Cloudflare + browser)
+
+This site is served as **GitHub Pages behind Cloudflare** (`paintings.dhimmitude.org`). GitHub Pages cannot set custom `Cache-Control` headers, so caching is improved in two layers:
+
+1. **Repo:** content-hash query strings (`?v=…`) on CSS/JS/manifest, a **service worker** (`sw.js`) that cache-firsts `/images/*`, and `favicon.svg`.
+2. **Cloudflare:** Cache Rules so HTML is not left as `cf-cache-status: DYNAMIC` — see **[CLOUDFLARE.md](./CLOUDFLARE.md)** for the exact dashboard settings.
+
+After changing `styles.css`, `app.js`, or `manifest.json`, refresh fingerprints before commit:
+
+```bash
+python3 stamp_assets.py
+```
+
+Then purge Cloudflare HTML/`sw.js` (or Purge Everything) once after deploy.
+
 ### Optional: ignore huge binaries during development
 
 If you only want the script and site code in git until you’re ready to publish:
