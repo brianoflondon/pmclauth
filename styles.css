@@ -1,5 +1,56 @@
 /* Orientalist PD Gallery — static GitHub Pages site */
 
+/* Self-hosted fonts (replaces Google Fonts) */
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/cormorant-garamond-400.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/cormorant-garamond-600.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/cormorant-garamond-400italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("fonts/source-sans-3-300.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/source-sans-3-400.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/source-sans-3-600.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Arab Dances";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/arab-dances.ttf") format("truetype");
+}
+
 :root {
   --bg: #0f0e0c;
   --bg-elevated: #1a1814;
@@ -90,8 +141,8 @@ a:hover {
 
 .site-header h1 {
   margin: 0 0 1rem;
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: "Arab Dances", Georgia, "Times New Roman", serif;
+  font-weight: 400;
   font-size: clamp(2.4rem, 5vw, 3.6rem);
   line-height: 1.1;
   letter-spacing: 0.01em;

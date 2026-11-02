@@ -30,6 +30,9 @@ ASSETS = {
     "manifest.json": ROOT / "manifest.json",
 }
 
+FONT_DIR = ROOT / "fonts"
+FONTS = {f"fonts/{p.name}": FONT_DIR / p.name for p in sorted(FONT_DIR.glob("*.ttf"))}
+
 
 def short_hash(path: Path, length: int = 12) -> str:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -38,7 +41,7 @@ def short_hash(path: Path, length: int = 12) -> str:
 
 def combined_stamp(hashes: dict[str, str]) -> str:
     """Build CACHE_VERSION from all fingerprinted assets (not just manifest)."""
-    material = "|".join(f"{name}:{hashes[name]}" for name in sorted(hashes))
+    material = "|".join(f"{name}:{hashes[name]}" for name in sorted(hashes) if name != "favicon.svg")
     digest = hashlib.sha256(material.encode("utf-8")).hexdigest()[:12]
     day = datetime.now(timezone.utc).strftime("%Y%m%d")
     return f"{day}-{digest}"
@@ -46,6 +49,8 @@ def combined_stamp(hashes: dict[str, str]) -> str:
 
 def main() -> None:
     hashes = {name: short_hash(path) for name, path in ASSETS.items()}
+    font_hashes = {name: short_hash(path) for name, path in FONTS.items()}
+    all_hashes = {**hashes, **font_hashes}
 
     index_path = ROOT / "index.html"
     index = index_path.read_text(encoding="utf-8")
@@ -80,7 +85,7 @@ def main() -> None:
     index_path.write_text(index, encoding="utf-8")
 
     # Stamp after final hashes so CSS/JS-only changes also bump SW caches
-    stamp = combined_stamp(hashes)
+    stamp = combined_stamp(all_hashes)
 
     sw_path = ROOT / "sw.js"
     sw = sw_path.read_text(encoding="utf-8")
@@ -89,13 +94,20 @@ def main() -> None:
         f'const CACHE_VERSION = "{stamp}";',
         sw,
     )
+
+    # Build PRECACHE_URLS including versioned font files
+    precache_entries = [
+        '"./"',
+        '"./index.html"',
+        f'"./styles.css?v={hashes["styles.css"]}"',
+        f'"./app.js?v={hashes["app.js"]}"',
+        f'"./manifest.json?v={hashes["manifest.json"]}"',
+        '"./favicon.svg"',
+    ]
+    for path, h in sorted(font_hashes.items()):
+        precache_entries.append(f'"./{path}?v={h}"')
     precache = f"""const PRECACHE_URLS = [
-  "./",
-  "./index.html",
-  "./styles.css?v={hashes["styles.css"]}",
-  "./app.js?v={hashes["app.js"]}",
-  "./manifest.json?v={hashes["manifest.json"]}",
-  "./favicon.svg",
+  {",\\n  ".join(precache_entries)},
 ];"""
     sw = re.sub(
         r"const PRECACHE_URLS = \[[^\]]*?\];",
@@ -107,7 +119,7 @@ def main() -> None:
     sw_path.write_text(sw, encoding="utf-8")
 
     print("Asset fingerprints:")
-    for name, value in hashes.items():
+    for name, value in all_hashes.items():
         print(f"  {name}: {value}")
     print(f"CACHE_VERSION: {stamp}")
     print("Updated index.html, app.js, sw.js")
