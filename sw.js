@@ -6,17 +6,25 @@
  * - Bump CACHE_VERSION (or run stamp_assets.py) after publishing content changes
  *   so clients drop old caches.
  */
-const CACHE_VERSION = "20260916-2eece7a53342";
+const CACHE_VERSION = "20261102-2f5af1e1aade";
 const SHELL_CACHE = `gallery-shell-${CACHE_VERSION}`;
 const IMAGE_CACHE = `gallery-images-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   "./",
   "./index.html",
-  "./styles.css?v=13ca16b93e63",
+  "./styles.css?v=11e496d5285d",
   "./app.js?v=9396b7887666",
+  "./register-sw.js?v=86c6e616289b",
   "./manifest.json?v=ce86a839d167",
   "./favicon.svg",
+  "./fonts/arab-dances.ttf?v=e49ee9925acb",
+  "./fonts/cormorant-garamond-400.ttf?v=6d37a86241a2",
+  "./fonts/cormorant-garamond-400italic.ttf?v=0b9a8a33cfaa",
+  "./fonts/cormorant-garamond-600.ttf?v=69e7ae35cba2",
+  "./fonts/source-sans-3-300.ttf?v=9457edcf620b",
+  "./fonts/source-sans-3-400.ttf?v=b6f2cc8d9905",
+  "./fonts/source-sans-3-600.ttf?v=26efb7fbad95",
 ];
 
 self.addEventListener("install", (event) => {

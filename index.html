@@ -10,7 +10,7 @@
   <meta name="theme-color" content="#0f0e0c" />
   <title>Slave Trade Paintings — Public Domain Gallery</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css?v=13ca16b93e63" />
+  <link rel="stylesheet" href="styles.css?v=11e496d5285d" />
 </head>
 
 <body>
@@ -107,15 +107,7 @@
   </dialog>
 
   <script src="app.js?v=9396b7887666"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("./sw.js").catch(function () {
-          /* offline / private mode — ignore */
-        });
-      });
-    }
-  </script>
+  <script src="register-sw.js?v=86c6e616289b"></script>
 </body>
 
 </html>
