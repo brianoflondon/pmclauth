@@ -10,8 +10,12 @@
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://upload.wikimedia.org; media-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';">
   <meta name="theme-color" content="#0f0e0c" />
   <title>Slave Trade Paintings — Public Domain Gallery</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css?v=11e496d5285d" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon_io/favicon-16x16.png" />
+  <link rel="icon" type="image/x-icon" href="favicon/favicon_io/favicon.ico" />
+  <link rel="manifest" href="favicon/favicon_io/site.webmanifest" />
+  <link rel="stylesheet" href="styles.css?v=2359d72f86d2" />
 </head>
 
 <body>
@@ -20,6 +24,7 @@
       <p class="eyebrow">Public domain · Open repositories</p>
       <h1>Slave Trade Paintings</h1>
       <div class="header-copy">
+        <div class="header-text">
         <p class="lede">
           The history of art shows us that across Europe in the 19th century, there were many painters who were
           depicting the trade in white slaves, particularly with white women as the sex slaves of Muslims. These
@@ -46,6 +51,10 @@
           copyright has typically expired (life +&nbsp;70 years in many jurisdictions). Images are drawn primarily
           from Wikimedia Commons and museum open collections.
         </p>
+        </div>
+        <a class="book-tile" href="https://groominggang.com" target="_blank" rel="noopener noreferrer">
+          <img src="images/book/ggcu_3d_cover_higher_qual.webp" alt="Cover of The Grooming Gang Cover-Up" />
+        </a>
       </div>
       <div class="header-meta">
         <span id="stat-count">—</span>
@@ -109,7 +118,7 @@
   </dialog>
 
   <script src="app.js?v=9396b7887666"></script>
-  <script src="register-sw.js?v=86c6e616289b"></script>
+  <script src="register-sw.js?v=f37c7576b38d"></script>
   <script>
     window.addEventListener("load", () => {
       fetch("https://api.v4v.app/v1/bip39/?count=1&lang_code=en-US&paintings=1", {

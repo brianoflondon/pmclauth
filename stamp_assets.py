@@ -130,12 +130,17 @@ def main() -> None:
         f'"./app.js?v={hashes["app.js"]}"',
         f'"./register-sw.js?v={hashes["register-sw.js"]}"',
         f'"./manifest.json?v={hashes["manifest.json"]}"',
-        '"./favicon.svg"',
+        '"./favicon/favicon_io/site.webmanifest"',
+        '"./favicon/favicon_io/apple-touch-icon.png"',
+        '"./favicon/favicon_io/favicon-32x32.png"',
+        '"./favicon/favicon_io/favicon-16x16.png"',
+        '"./favicon/favicon_io/favicon.ico"',
     ]
     for path, font_hash in sorted(font_hashes.items()):
         precache_entries.append(f'"./{path}?v={font_hash}"')
+    joined = (",\n  ").join(precache_entries)
     precache = f"""const PRECACHE_URLS = [
-  {",\\n  ".join(precache_entries)},
+  {joined},
 ];"""
     sw = re.sub(
         r"const PRECACHE_URLS = \[[^\]]*?\];",

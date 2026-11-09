@@ -149,10 +149,29 @@ a:hover {
 }
 
 .header-copy {
-  max-width: 42rem;
+  max-width: var(--max);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.header-text {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+}
+
+.book-tile {
+  display: block;
+}
+
+.book-tile img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .lede {
@@ -658,5 +677,15 @@ a:hover {
     grid-template-columns: 1fr;
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .header-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .book-tile {
+    max-width: 320px;
   }
 }
